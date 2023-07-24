@@ -25,14 +25,19 @@ jobs:
           tags: goda222/hostservice:${{ github.sha }}
   updateYml:
     runs-on: ubuntu-latest
+    needs: buildImage
     steps:
       - name: 1.Checkout
         uses: actions/checkout@v3
         with:
           repository: 'gohdahye/hostsvc-cd'
           token: ${{ secrets.GITHAB_TOKEN }}
-        - name: 2. Change Docker Tag
-          run: |
-            sed "s/image: goda222\/nodeapp:.*/images: goda222\/nodeapp:${{ github.sha }}/g"
+      - name: 2.Change Docker Tag
+        run: |
+          sed "s/image: goda222\/nodeapp:.*/images: goda222\/nodeapp:${{ github.sha }}/g" hostservice-deploy.yaml
+          git config --global user.email "kdhnate222@nate.com"
+          git config --global user.name "gohdahye"
+          git commit -am "triggered by github action"
+          git push origin main
 
 
