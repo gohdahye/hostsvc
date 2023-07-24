@@ -23,5 +23,16 @@ jobs:
         with:
           push: true
           tags: goda222/hostservice:${{ github.sha }}
+  updateYml:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 1.Checkout
+        uses: actions/checkout@v3
+        with:
+          repository: 'gohdahye/hostsvc-cd'
+          token: ${{ secrets.GITHAB_TOKEN }}
+        - name: 2. Change Docker Tag
+          run: |
+            sed "s/image: goda222\/nodeapp:.*/images: goda222\/nodeapp:${{ github.sha }}/g"
 
 
